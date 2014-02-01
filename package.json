@@ -1,0 +1,24 @@
+{
+  "name": "react.backbone",
+  "version": "0.0.1",
+  "description": "react.backbone ==============",
+  "main": "react.backbone.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/STRML/react.backbone.git"
+  },
+  "author": "Samuel Reed <sam@tixelated.com> (http://strml.net/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/STRML/react.backbone/issues"
+  },
+  "homepage": "https://github.com/STRML/react.backbone",
+  "dependencies": {
+    "backbone": "~1.1.0",
+    "envify": "~0.2.0",
+    "react": "~0.8.0"
+  }
+}

@@ -1,6 +1,7 @@
 'use strict';
 var Backbone = require('backbone');
 var React = require('react');
+var _ = require('lodash');
 
 // Stripped from https://github.com/usepropeller/react.backbone/blob/master/react.backbone.js
 React.BackboneMixin = {
@@ -8,13 +9,14 @@ React.BackboneMixin = {
         if (!model) {
             return;
         }
+
         // Detect if it's a collection
         if (model instanceof Backbone.Collection) {
-            model.on('add remove reset sort', function () { this.forceUpdate(); }, this);
+            model.on('add remove reset sort', this._throttledForceUpdate, this);
         }
         else if (model) {
             var changeOptions = this.changeOptions || 'change';
-            model.on(changeOptions, (this.onModelChange || function () { this.forceUpdate(); }), this);
+            model.on(changeOptions, (this.onModelChange || this._throttledForceUpdate), this);
         }
     },
     _unsubscribe: function(model) {
@@ -24,6 +26,10 @@ React.BackboneMixin = {
         model.off(null, null, this);
     },
     componentDidMount: function() {
+        // Wrap in function rather than using bind, bind will cause an invariant violation as the
+        // parameters that are passed are not what react expects.
+        this._throttledForceUpdate = _.throttle(function(){ this.forceUpdate();}, 50);
+        
         // Whenever there may be a change in the Backbone data, trigger a reconcile.
         this._subscribe(this.props.model);
     },
